@@ -29,6 +29,8 @@
 #include "status.h"
 #include "iconv_wrap.h"
 
+#include "battery_reader.h"
+
 #include <mpd/client.h>
 
 #include "hjson_cpp/hjson.h"
@@ -242,6 +244,7 @@ void mpd_info::init_vals()
   song_elapsed_secs = 0;
   song_total_secs = 0;
   kbitrate = 0;
+  
 }
 
 void mpd_info::set_vals(struct mpd_connection *conn)
@@ -448,10 +451,11 @@ float mpd_info::get_progress() const
 
 string mpd_info::get_kbitrate_str() const
 {
-  int rate = std::min(abs(kbitrate), 9999);
+  std::string battery_text = ups_reader.get_battery_status();
+  //int rate = std::min(abs(kbitrate), 9999);
   const size_t str_len = 5;
   char str[str_len];
-  snprintf(str, str_len, "%4d", rate);
+  snprintf(str, str_len, "%4d", battery_text);
   return str;
 }
 
