@@ -49,6 +49,7 @@ using std::vector;
 const int SPECT_WIDTH = 64;
 
 ArduiPi_OLED display; // global, for use during signal handling
+BatteryReader ups_reader(30);
 
 void cleanup(void)
 {
