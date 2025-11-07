@@ -44,11 +44,13 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "battery_reader.h"
 
-#include <string>
+#include <string> 
 
 using std::string;
 
+battery_reader ups_reader(30);
 namespace {
 const iconvpp::converter conv("ASCII//TRANSLIT", "UTF-8", true);
 }
@@ -448,10 +450,11 @@ float mpd_info::get_progress() const
 
 string mpd_info::get_kbitrate_str() const
 {
-  int rate = std::min(abs(kbitrate), 9999);
+  std::string battery_text = ups_reader.get_battery_status();
+  //int rate = std::min(abs(\), 9999);
   const size_t str_len = 5;
   char str[str_len];
-  snprintf(str, str_len, "%4d", rate);
+  snprintf(str, str_len, "%4d", battery_text);
   return str;
 }
 

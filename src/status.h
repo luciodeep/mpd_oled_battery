@@ -24,8 +24,37 @@
 
 #include "player.h"
 #include "timer.h"
-
+#if __has_include(<mpd/client.h>)
 #include <mpd/client.h>
+#else
+// Minimal mpd/client.h fallback for environments where the real header
+// isn't available (helps IntelliSense / editors). These are only
+// declarations so the translation unit can be parsed — the real
+// libmpdclient should be used when building/linking.
+struct mpd_connection;
+struct mpd_status;
+struct mpd_song;
+
+enum mpd_tag_type {
+  MPD_TAG_TITLE,
+  MPD_TAG_ARTIST,
+  MPD_TAG_NAME,
+  MPD_TAG_ALBUM_ARTIST,
+  MPD_TAG_COMPOSER,
+  MPD_TAG_PERFORMER,
+  MPD_TAG_UNKNOWN
+};
+
+enum mpd_state {
+  MPD_STATE_UNKNOWN = 0,
+  MPD_STATE_PLAY,
+  MPD_STATE_PAUSE,
+  MPD_STATE_STOP
+};
+
+enum { MPD_ERROR_SUCCESS = 0 };
+
+#endif
 #include <string>
 
 class mpd_info {
